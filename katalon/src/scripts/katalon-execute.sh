@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
-set -xe
+set -e
 
 echo "Starting Katalon Studio"
 
 current_dir=$(pwd)
+
+if [[ -v DOCKER_PROXY_ALIAS ]]; then
+  # add proxy alias to docker host entry in hosts file
+  echo "$(/sbin/ip route|awk '/default/ { print $3 }') $DOCKER_PROXY_ALIAS" >> /etc/hosts
+fi
 
 # create tmp directory
 tmp_dir=$KATALON_KATALON_ROOT_DIR/tmp
@@ -19,17 +24,16 @@ cp -r $KATALON_KATALON_ROOT_DIR/source/. $project_dir
 touch $project_dir/.classpath || exit
 chmod -R 777 $project_dir
 
-# report
-report_dir=$KATALON_KATALON_ROOT_DIR/report
-mkdir -p $report_dir
-chmod -R 777 $report_dir
+katalon_opts='-browserType="$BROWSER_TYPE" -retry=0 -statusDelay=15 -testSuitePath="$TEST_SUITE_PATH"'
 
 # build command line
 project_file=$(find $project_dir -maxdepth 1 -type f -name "*.prj")
-cmd="$KATALON_KATALON_INSTALL_DIR/katalon -runMode=console -reportFolder=$report_dir -projectPath=$project_file $KATALON_OPTS"
+cmd="$KATALON_KATALON_INSTALL_DIR/katalon -runMode=console -consoleLog -projectPath=$project_file $katalon_opts"
 
 $KATALON_BASE_ROOT_DIR/scripts/xvfb.sh start
 cd $tmp_dir
 eval "$cmd"
 
 cd $current_dir
+
+echo "PASSED"

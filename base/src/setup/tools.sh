@@ -4,8 +4,8 @@ set -xe
 
 echo "Install tools"
 
-apt update
-apt install -y apt-utils
-apt upgrade -y
-apt dist-upgrade -y
-apt install -y wget
+apt-get update
+apt-get install -y apt-utils
+apt-get upgrade -y
+apt-get dist-upgrade -y
+apt-get install -y wget

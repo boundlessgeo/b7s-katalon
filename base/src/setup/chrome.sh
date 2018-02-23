@@ -4,10 +4,16 @@ set -xe
 
 echo "Install Google Chrome"
 
-package='google-chrome-stable_current_amd64.deb'
+package='google-chrome.deb'
 
-wget -O $package  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-dpkg -i $package || apt -y -f install
+if [[ -v CHROME_DEB_URL ]]; then
+  url=$CHROME_DEB_URL
+else
+  url=https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+fi
+
+wget -O $package  $url
+dpkg -i $package || apt-get install -y -f
 rm $package
 
 wrapper_path=$(readlink -f /usr/bin/google-chrome)

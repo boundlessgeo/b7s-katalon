@@ -4,5 +4,5 @@ set -xe
 
 echo "Clean up"
 
-apt clean all
+apt-get clean all
 cat $KATALON_VERSION_FILE

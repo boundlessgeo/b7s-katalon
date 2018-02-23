@@ -4,4 +4,4 @@ set -xe
 
 echo "Install Xvfb"
 
-apt install -y xvfb
+apt-get install -y xvfb

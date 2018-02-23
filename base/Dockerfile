@@ -1,5 +1,9 @@
 FROM ubuntu:16.04
 
+# product drivers
+ENV CHROME_DEB_URL=https://s3.amazonaws.com/b7s-deb/chrome64_62.0.3202.75.deb
+ENV FIREFOX_DEB_URL=https://s3.amazonaws.com/b7s-deb/firefox-mozilla-build_52.0.2-0ubuntu1_amd64.deb
+
 # common environment variables
 ENV KATALON_ROOT_DIR=/katalon
 ENV KATALON_BASE_ROOT_DIR=/katalon/base
@@ -17,7 +21,7 @@ RUN $KATALON_MAKE_EXECUTABLE_SCRIPT .
 
 # build
 ENV DISPLAY :99
-ENV DISPLAY_CONFIGURATION 1024x768x24
+ENV DISPLAY_CONFIGURATION 2560x1080x24
 RUN ./index.sh
 
 RUN $KATALON_CLEAN_UP_SCRIPT
